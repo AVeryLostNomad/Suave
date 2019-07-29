@@ -1,14 +1,56 @@
 .container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  margin: auto;
+}
+
+.loading_msg {
+  margin-top: 0 !important;
+}
+
+.loading_progress {
+  background: rgba(47, 68, 66, 0.27) !important;
+  margin-top: 15px;
+
+  --bar-box-shadow: #009788 !important;
+  --bar-background: #009788 !important;
+}
+
+.loading_codeview {
+  margin-top: 20px;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background: white;
+  padding: 14px;
+
+  --selection-background: #b2d7fd;
+}
+
+.element {
   position: absolute;
-  top: 30%;
-  left: 10px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
   text-align: center;
+  line-height: 50vh;
+  width: 50vw;
+  height: 50vh;
 }
 
-.container h2 {
-  font-size: 5rem;
+.element > div {
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+  line-height: normal;
 }
 
-.container a {
-  font-size: 1.4rem;
+/* just aesthetics */
+body {
+  height: 100vh;
+  display: flex;
+  background: azure;
 }

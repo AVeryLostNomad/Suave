@@ -5,3 +5,7 @@
 @import '~@fortawesome/fontawesome-free/css/all.css';
 @import '~xel/themes/material.css';
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans|Roboto|Roboto+Mono&display=swap');
+
+body {
+  background: #eee;
+}
