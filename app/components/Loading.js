@@ -172,7 +172,7 @@ export default class Loading extends Component<Props> {
       }
       const fileList = getFiles(dirPath);
       // We now have a list of all files within the directory. We are looking for the ones that end in .py
-      for(let j = 0; j < fileList.length; j++){
+      for(let j = 0; j < fileList.length; j+=1){
         const thisFile = fileList[j];
         if(thisFile.endsWith('.py')){
           // This is a python file
@@ -260,6 +260,7 @@ export default class Loading extends Component<Props> {
     this.statusText.current.innerText = 'All prelaunch steps executed!';
     this.progressBarRef.current.value = 1;
     this.codeRef.current.innerText = 'suave itsgotime';
+    window.location.href = "#/test";
   }
 
   render() {
