@@ -19,7 +19,9 @@ const getDirectories = source =>
 const getFiles = source =>
   fs.readdirSync(source).map(name => join(source, name)).filter(isFile);
 
-type Props = {};
+type Props = {
+  onDone: () => {}
+};
 
 export default class Loading extends Component<Props> {
   props: Props;
@@ -40,7 +42,7 @@ export default class Loading extends Component<Props> {
     this.progressBarRef = React.createRef();
     this.statusText = React.createRef();
 
-    setInterval(() => {
+    this.updateinterval = setInterval(() => {
       const element = this.progressRef.current;
       switch(i){
         case(0):{
@@ -257,10 +259,12 @@ export default class Loading extends Component<Props> {
         }
       }
     });
+    const {onDone} = this.props;
     this.statusText.current.innerText = 'All prelaunch steps executed!';
     this.progressBarRef.current.value = 1;
     this.codeRef.current.innerText = 'suave itsgotime';
-    window.location.href = "#/test";
+    clearInterval(this.updateinterval);
+    onDone();
   }
 
   render() {
