@@ -20,7 +20,7 @@ const getFiles = source =>
   fs.readdirSync(source).map(name => join(source, name)).filter(isFile);
 
 type Props = {
-  onDone: () => {}
+  onDone: (plugins) => {}
 };
 
 export default class Loading extends Component<Props> {
@@ -223,14 +223,13 @@ export default class Loading extends Component<Props> {
         // What else do I need to do?
         clearInterval(a);
         console.log('Going to step 4');
-        this.stepFour(numberSteps);
+        this.stepFour(numberSteps, loaded);
       }
     }, 250);
   }
 
-  stepFour(numberSteps){
+  stepFour(numberSteps, loadedPlugins){
     // We want to go through each plugin and see if it has any prelaunch commands. If so, we need to go ahead and run it.
-    window.localStorage.setItem('loaded_plugins', JSON.stringify(window.loaded_plugins)); // TODO can remove this if it turns out to be unnecessary because window.loadedplugins presists anyway.
     const path = `${homedir}\\Documents\\Suave\\Plugins`;
     Object.keys(window.loaded_plugins).forEach((key) => {
       const value = window.loaded_plugins[key];
@@ -264,7 +263,7 @@ export default class Loading extends Component<Props> {
     this.progressBarRef.current.value = 1;
     this.codeRef.current.innerText = 'suave itsgotime';
     clearInterval(this.updateinterval);
-    onDone();
+    onDone(loadedPlugins);
   }
 
   render() {

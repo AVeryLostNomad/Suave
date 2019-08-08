@@ -8,22 +8,27 @@ export default class AppComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true
+      isLoading: true,
+      plugins: {}
     };
   }
 
-  handleDoneLoading(){
+  handleDoneLoading(plugins){
     console.log('Marked done!!');
     // Should trigger a reload of the state and change the window over
-    this.setState({isLoading: false});
+    this.setState({
+      isLoading: false,
+      plugins,
+    });
   }
 
   render() {
-    const {isLoading} = this.state;
+    const {isLoading, plugins} = this.state;
 
     return (
       <div>
-        {isLoading ? <Loading onDone={() => this.handleDoneLoading()} /> : <Editor />}
+        {/* eslint-disable-next-line no-shadow */}
+        {isLoading ? <Loading onDone={(pl) => this.handleDoneLoading(pl)} /> : <Editor plugins={plugins} />}
       </div>
     );
   }
