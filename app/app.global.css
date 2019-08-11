@@ -6,6 +6,23 @@
 @import '~xel/themes/material.css';
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans|Roboto|Roboto+Mono&display=swap');
 
+html {
+  min-height: 100% !important;
+  height: 100% !important;
+}
+
 body {
   background: #eee;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
 }

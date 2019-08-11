@@ -1,0 +1,47 @@
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  margin: auto;
+  background: white;
+}
+
+.leftpanel {
+  background-color: white;
+}
+
+.content {
+  display: block;
+  background: #fff;
+}
+
+.Appnav {
+  position: absolute;
+  width: 200px;
+  top: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #fff;
+  border-right: 1px solid #eee;
+}
+
+.Appnav nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 !important;
+}
+
+.Appcontent {
+  left: 200px;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  overflow-x: auto;
+  overflow-y: auto;
+  transform: translateZ(0);
+}

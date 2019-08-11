@@ -1,4 +1,5 @@
 import React from 'react';
+import {Fabric} from 'office-ui-fabric-react/lib/Fabric'
 
 import Loading from '../components/Loading';
 import Editor from '../components/Editor';
@@ -26,10 +27,10 @@ export default class AppComponent extends React.Component {
     const {isLoading, plugins} = this.state;
 
     return (
-      <div>
+      <Fabric >
         {/* eslint-disable-next-line no-shadow */}
         {isLoading ? <Loading onDone={(pl) => this.handleDoneLoading(pl)} /> : <Editor plugins={plugins} />}
-      </div>
+      </Fabric>
     );
   }
 }

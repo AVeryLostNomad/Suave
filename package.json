@@ -269,6 +269,7 @@
     "history": "^4.7.2",
     "material-ui": "^0.20.2",
     "material-ui-icons": "^1.0.0-beta.36",
+    "office-ui-fabric-react": "^7.22.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-hot-loader": "^4.3.12",
