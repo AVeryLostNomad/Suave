@@ -4,6 +4,7 @@
   height: 100vh;
   margin: auto;
   background: white;
+  font-family: "Segoe UI Light WestEuropean","Segoe UI Light","Segoe UI",Tahoma,Arial,sans-serif;
 }
 
 .leftpanel {
@@ -44,6 +45,20 @@
   padding: 0 !important;
 }
 
+.Appnav nav > div > button {
+  text-align: left;
+  display: block;
+  width: 100%;
+  height: 40px;
+  font-family: "Segoe UI Light WestEuropean", "Segoe UI Light", "Segoe UI", Tahoma, Arial, sans-serif;
+  line-height: 40px;
+  margin: 5px 0;
+  padding: 0 30px;
+  cursor: pointer;
+  color: #333;
+  font-size: 16px;
+}
+
 .Appcontent {
   left: 200px;
   position: absolute;
@@ -79,7 +94,6 @@
 }
 
 .Headertitle span {
-  font-family: "Segoe UI Light WestEuropean","Segoe UI Light","Segoe UI",Tahoma,Arial,sans-serif;
   font-size: 21px;
   font-weight: 400;
 }
