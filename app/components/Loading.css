@@ -1,3 +1,5 @@
+@import '~xel/themes/material.css';
+
 .container {
   position: relative;
   width: 100vw;

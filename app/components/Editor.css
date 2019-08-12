@@ -15,10 +15,18 @@
   background: #fff;
 }
 
+.Appheader {
+  position: absolute;
+  top: 0;
+  height: 50px;
+  left: 0;
+  right: 0;
+}
+
 .Appnav {
   position: absolute;
   width: 200px;
-  top: 0;
+  top: 50px;
   bottom: 0;
   box-sizing: border-box;
   overflow-x: hidden;
@@ -40,8 +48,38 @@
   left: 200px;
   position: absolute;
   bottom: 0;
-  top: 0;
+  top: 50px;
   overflow-x: auto;
   overflow-y: auto;
   transform: translateZ(0);
+}
+
+.Header {
+  height: 50px;
+  line-height: 50px;
+  padding: 0 20px;
+  background: #005a93;
+  overflow: hidden;
+  user-select: none;
+}
+
+.Headertitle {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 48px;
+}
+
+.Headertitle i {
+  padding-right: 8px;
+  display: inline-block;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  vertical-align: -3px;
+}
+
+.Headertitle span {
+  font-family: "Segoe UI Light WestEuropean","Segoe UI Light","Segoe UI",Tahoma,Arial,sans-serif;
+  font-size: 21px;
+  font-weight: 400;
 }
