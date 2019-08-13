@@ -1,0 +1,78 @@
+.card_caption {
+  padding: 0 3px;
+  box-sizing: border-box;
+}
+
+.card {
+  margin: 0 auto;
+  min-width: 400px;
+  width: 600px;
+  background-color: #fff;
+  border: 1px solid #CAC8C7;
+  font-family: wf_segoe-ui_normal, 'Segoe UI', 'Segoe WP', Tahoma, Arial, sans-serif;
+  font-size: 12px;
+}
+
+.card_header {
+  font-family: wf_segoe-ui_semilight, "Segoe UI Semilight", "Segoe WP Semilight", "Segoe UI", "Segoe WP", Tahoma, Arial, sans-serif;
+  font-size: 14px;
+  text-align: left;
+  height: 44px;
+  line-height: 44px;
+  color: #000;
+  display: flex;
+  justify-content: space-between;
+}
+
+.card_context {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  width: 44px;
+  box-sizing: border-box;
+  text-rendering: optimizeLegibility;
+}
+
+.card_context div{
+  width: 44px;
+}
+
+.context_button {
+  height: 44px;
+  width: 44px;
+  float: left;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 26px;
+  -webkit-writing-mode: horizontal-tb !important;
+  text-rendering: auto;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-indent: 0;
+  text-shadow:none;
+  display: inline-block;
+  text-align: center;
+  align-items: flex-start;
+  border: none;
+}
+
+.context_button i {
+  vertical-align: middle;
+  font-size: calc(44px / 2);
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  font-family: FabricMDL2Icons;
+}
+
+.card_closed_content {
+  display: flex;
+  overflow: hidden;
+  flex: 1 1 auto;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+}

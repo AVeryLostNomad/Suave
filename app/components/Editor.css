@@ -68,6 +68,7 @@
   overflow-x: auto;
   overflow-y: auto;
   transform: translateZ(0);
+  right: 0;
   font-family: "Segoe UI Light WestEuropean","Segoe UI Light","Segoe UI",Tahoma,Arial,sans-serif;
 }
 

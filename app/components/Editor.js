@@ -9,6 +9,7 @@ import { initializeIcons  } from 'office-ui-fabric-react/lib/Icons'
 import { Icon } from 'office-ui-fabric-react/lib/Icon'
 import Test from './Test'
 import Plugins from './Plugins'
+import FlowDesigner from './FlowDesigner';
 
 import styles from './Editor.css';
 
@@ -40,9 +41,11 @@ export default class Editor extends Component<Props> {
     const {visiblePage} = this.state;
     switch(visiblePage) {
       case 'plugins':
-        return <Plugins plugins={plugins} />
+        return <Plugins plugins={plugins} />;
+      case 'flowdesigner':
+        return <FlowDesigner plugins={plugins} />;
       default:
-        return (<Test />);
+        return <Test />;
     }
   }
 
@@ -77,6 +80,16 @@ export default class Editor extends Component<Props> {
                   url: ''
                 }
               ],
+            },
+            {
+              name: 'Flows',
+              links: [
+                {
+                  key: 'flowdesigner',
+                  name: 'Designer',
+                  url: ''
+                },
+              ]
             }
           ]}
                onLinkClick={(e, item) => this.navLinkClick(e, item)}

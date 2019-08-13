@@ -15,7 +15,6 @@ export default class AppComponent extends React.Component {
   }
 
   handleDoneLoading(plugins){
-    console.log('Marked done!!');
     // Should trigger a reload of the state and change the window over
     this.setState({
       isLoading: false,
