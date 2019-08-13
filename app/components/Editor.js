@@ -7,7 +7,8 @@ import {
 } from '@uifabric/styling'
 import { initializeIcons  } from 'office-ui-fabric-react/lib/Icons'
 import { Icon } from 'office-ui-fabric-react/lib/Icon'
-import ReactDOM from "react-dom"
+import Test from './Test'
+import Plugins from './Plugins'
 
 import styles from './Editor.css';
 
@@ -34,10 +35,19 @@ export default class Editor extends Component<Props> {
     });
   }
 
-  render() {
-    // const {plugins} = this.props;
+  showProperContentPage(){
+    const {plugins} = this.props;
     const {visiblePage} = this.state;
+    switch(visiblePage) {
+      case 'plugins':
+        return <Plugins plugins={plugins} />
+      default:
+        return (<Test />);
+    }
+  }
 
+  render() {
+    const {visiblePage} = this.state;
     return (
       <div className={styles.container}>
         {/* Header of the app */}
@@ -76,7 +86,7 @@ export default class Editor extends Component<Props> {
 
         {/* Content */}
         <div className={styles.Appcontent}>
-          Walooyoo
+          {this.showProperContentPage()}
         </div>
       </div>
     );
