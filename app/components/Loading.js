@@ -33,10 +33,6 @@ export default class Loading extends Component<Props> {
 
     super();
 
-    console.log(
-      'This is a console message from the constructor of the loading guy'
-    );
-
     this.progressRef = React.createRef();
     this.codeRef = React.createRef();
     this.progressBarRef = React.createRef();
@@ -231,6 +227,16 @@ export default class Loading extends Component<Props> {
   stepFour(numberSteps, loadedPlugins){
     // We want to go through each plugin and see if it has any prelaunch commands. If so, we need to go ahead and run it.
     const path = `${homedir}\\Documents\\Suave\\Plugins`;
+    let totalPrelaunch = 0;
+    Object.keys(window.loaded_plugins).forEach((key) => {
+      const value = window.loaded_plugins[key];
+      if('prelaunch' in value){
+        const prelaunchArray = value.prelaunch;
+        if(prelaunchArray.length > 0) {
+          totalPrelaunch += prelaunchArray.length;
+        }
+      }
+    });
     Object.keys(window.loaded_plugins).forEach((key) => {
       const value = window.loaded_plugins[key];
       if(debug) console.log(`Checking ${key}`);
@@ -247,6 +253,16 @@ export default class Loading extends Component<Props> {
 
             child.stdout.on('data', (data)=>{
               console.log(data.toString());
+              totalPrelaunch -= 1;
+              console.log('Have left ' + totalPrelaunch);
+              if(totalPrelaunch <= 0){
+                const {onDone} = this.props;
+                this.statusText.current.innerText = 'All prelaunch steps executed!';
+                this.progressBarRef.current.value = 1;
+                this.codeRef.current.innerText = 'suave itsgotime';
+                clearInterval(this.updateinterval);
+                onDone(loadedPlugins);
+              }
               child.kill('SIGINT')
             });
 
@@ -258,12 +274,6 @@ export default class Loading extends Component<Props> {
         }
       }
     });
-    const {onDone} = this.props;
-    this.statusText.current.innerText = 'All prelaunch steps executed!';
-    this.progressBarRef.current.value = 1;
-    this.codeRef.current.innerText = 'suave itsgotime';
-    clearInterval(this.updateinterval);
-    onDone(loadedPlugins);
   }
 
   render() {
