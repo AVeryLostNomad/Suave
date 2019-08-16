@@ -169,12 +169,21 @@ export default class Loading extends Component<Props> {
         console.log(`Working on ${  dirPath}`);
       }
       const fileList = getFiles(dirPath);
+      let toFind = 0;
+      for(let j = 0; j < fileList.length; j+=1){
+        const thisFile = fileList[j];
+        if(thisFile.endsWith('.py')) {
+          toFind += 1;
+        }
+      }
+      console.log('Need to load ' + toFind + ' files');
       // We now have a list of all files within the directory. We are looking for the ones that end in .py
       for(let j = 0; j < fileList.length; j+=1){
         const thisFile = fileList[j];
         if(thisFile.endsWith('.py')){
           // This is a python file
           console.log(`Found python file: ${  thisFile}`);
+          console.log('python', [`${path  }\\explore_plugin_package.py`, thisFile]);
           const child = spawn('python', [`${path  }\\explore_plugin_package.py`, thisFile]);
 
           const thisFileCopy = (` ${  dirPath}`).slice(1);
@@ -190,13 +199,26 @@ export default class Loading extends Component<Props> {
             const triggers = JSON.parse(arrayofLines[0].replace(new RegExp('\'', 'g'), "\""));
             const actions = JSON.parse(arrayofLines[1].replace(new RegExp('\'', 'g'), "\""));
             const prelaunch = JSON.parse(arrayofLines[2].replace(new RegExp('\'', 'g'), "\""));
+            if(triggers.length === 0 && actions.length === 0 && prelaunch.length === 0){
+              toFind -= 1;
+              if(toFind <= 0){
+                this.affected = true;
+              }
+              child.kill('SIGINT');
+              this.progressBarRef.current.value += perPlugin;
+              return;
+            }
             loaded[thisFileCopy] = {
               'pyfile': thisFile,
               'triggers': triggers,
               'actions': actions,
               'prelaunch': prelaunch
             };
-            this.affected = true;
+            toFind -= 1;
+            if(toFind <= 0){
+              this.affected = true;
+            }
+
             child.kill('SIGINT');
             this.progressBarRef.current.value += perPlugin;
           });
