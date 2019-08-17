@@ -43,7 +43,7 @@ export default class Editor extends Component<Props> {
       case 'plugins':
         return <Plugins plugins={plugins} />;
       case 'flowdesigner':
-        return <FlowDesigner plugins={plugins} />;
+        return <FlowDesigner plugins={plugins} designSoFar={{}} />;
       default:
         return <Test />;
     }

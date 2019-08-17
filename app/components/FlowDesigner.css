@@ -60,3 +60,26 @@
   width: 100%;
   margin: 0 auto;
 }
+
+.cardChildren {
+  width: 100%;
+  display: flex;
+  text-align: center;
+}
+
+.connectorArrowDown {
+  display: table;
+  width: 100%;
+  margin: auto;
+  height: 40px;
+  text-align: center;
+}
+
+.arrowRow {
+  display: table-row;
+  height: inherit;
+}
+
+.arrowDown {
+  display: table-cell;
+}
