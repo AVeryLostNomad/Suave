@@ -1,0 +1,94 @@
+.component_main {
+  width: 100%;
+  background-color: white;
+  outline: none;
+  max-height: 1271px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.133) 0 6.4px 14.4px 0, rgba(0, 0, 0, 0.11) 0 1.2px 3.6px 0;
+  min-width: 300px;
+}
+
+.suggestionsTitle {
+  padding-top: 0;
+  padding-right: 12px;
+  padding-bottom: 0;
+  padding-left: 12px;
+  font-size: 12px;
+  color: rgb(0, 120, 212);
+  line-height: 40px;
+  border-bottom: 1px solid rgb(237, 235, 233);
+}
+
+.noSuggestions {
+  text-align: center;
+  color: rgb(96, 94, 92);
+  font-size: 12px;
+  line-height: 30px;
+}
+
+.suggestionsContainer {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 300px;
+}
+
+.suggestionsItemRoot {
+  display: flex;
+  align-items: stretch;
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+}
+
+.suggestionsItem {
+  font-family: inherit;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  font-weight: 400;
+  box-sizing: border-box;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  vertical-align: top;
+  padding: 0;
+  background-color: transparent;
+  user-select: none;
+  outline: transparent;
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.itemHover:hover {
+  background: rgb(243, 242, 241) !important;
+}
+
+.itemHover[aria-selected="true"]{
+  background: #EDEBE9;
+}
+
+.flexContainer {
+  display: flex;
+  height: 100%;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.tagItem {
+  text-overflow: ellipsis;
+  max-width: 60vw;
+  padding-top: 6px;
+  padding-right: 12px;
+  padding-bottom: 7px;
+  padding-left: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+}

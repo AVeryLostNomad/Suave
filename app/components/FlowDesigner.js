@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 import { FontClassNames } from '@uifabric/styling';
 
 import {
-  Button
+  Button,
+  Dialog,
+  DialogType,
+  DialogFooter,
+  PrimaryButton,
+  DefaultButton,
 } from 'office-ui-fabric-react/lib/index'
 
 import FlowCard from './flow_pieces/FlowCard'
+import AutosuggestSearch from './AutosuggestSearch';
 
 
 import styles from './FlowDesigner.css';
@@ -56,20 +62,23 @@ export default class FlowDesigner extends Component<Props> {
   constructor(props) {
     super(props);
 
-    const {designSoFar} = props;
+    const {designSoFar, plugins} = props;
 
     if(0 in designSoFar){
       // We are loading a flow we were already working on
       this.state = {
         saveAllowed: false,
-        flowJson: designSoFar
+        flowJson: designSoFar,
+        showAddStateDialog: false
       }
     }else{
       this.state = {
         saveAllowed: false,
-        flowJson: FlowDesigner.getDefaultFlow()
+        flowJson: FlowDesigner.getDefaultFlow(),
+        showAddStateDialog: false
       }
     }
+    this.pickerRef = React.createRef();
   }
 
   clickOnElement(id){
@@ -150,8 +159,21 @@ export default class FlowDesigner extends Component<Props> {
     }
   }
 
+  showAddStep() {
+    this.setState({showAddStateDialog: true});
+  }
+
+  closeAddStep(){
+    this.setState({showAddStateDialog: false});
+  }
+
+  onAddStep(name: string) {
+    console.log(`Getting request to add ${  name}`);
+  }
+
   render() {
-    const {saveAllowed} = this.state;
+    const {saveAllowed, showAddStateDialog} = this.state;
+    const {plugins} = this.props;
 
     return (
       <div className={`${FontClassNames.medium} ${styles.designer_container}`}>
@@ -167,11 +189,38 @@ export default class FlowDesigner extends Component<Props> {
           </div>
           <div className={styles.actionpalette}>
             <div className={styles.buttonsrow}>
-              <Button>+ New Step</Button>
+              <Button onClick={() => {this.showAddStep()}}>+ New Step</Button>
               <Button disabled={!saveAllowed}>Save</Button>
             </div>
           </div>
         </div>
+
+        <Dialog
+          hidden={!showAddStateDialog}
+          onDismiss={() => {this.closeAddStep()}}
+          dialogContentProps={{
+            type: DialogType.normal,
+            title: 'Add a step',
+            subText: 'Search for what you want this step to do. Suggestions from your installed plugins will be shown.'
+          }}
+          modalProps={{
+            isBlocking: false,
+            styles: { main: { maxWidth: 600 } }
+          }}
+         >
+
+          <AutosuggestSearch placeholder="Add an action"
+                             suggestionsHeader="Suggested Plugin"
+                             noneFoundMessage="No matching plugins found"
+                             plugins={plugins}
+                             selectedCallback={(pluginName) => {this.onAddStep(pluginName)}}
+          />
+
+          <DialogFooter>
+            <PrimaryButton onClick={() => {this.closeAddStep()}} text="Add" />
+            <DefaultButton onClick={() => {this.closeAddStep()}} text="Cancel" />
+          </DialogFooter>
+        </Dialog>
       </div>
     );
   }
