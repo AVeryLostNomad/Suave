@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import {
-  IconButton
+  IconButton,
+  Label,
+  TextField
 } from 'office-ui-fabric-react/lib/index'
+
+import DraftEditor from '../DraftEditor'
 
 import styles from './FlowCard.css';
 
@@ -19,7 +23,10 @@ type Props = {
   outputs: [], // Describes the outputs we should show for this element
   headerClickCallback: (id) => {},  // This will be a function passed in from the parent editor component. It will make the other components stop highlighting.
   collapsed: true,
-  shouldHighlight: false
+  shouldHighlight: false,
+  variables: [],  // A list of variable objects going around in the state
+  states: {},  // A list of actual states of this card, deviating from the default (i.e. unfilled states).
+  stateChangeCallback: (varName, newValue) => {}
 };
 
 export default class FlowCard extends Component<Props> {
@@ -31,6 +38,9 @@ export default class FlowCard extends Component<Props> {
       // eslint-disable-next-line react/no-unused-state
       showCallout: false, // Whether or not to show the context menu
     };
+
+    console.log('Initializing with states');
+    console.log(props.states);
 
     this.contextButton = React.createRef();
   }
@@ -102,6 +112,12 @@ export default class FlowCard extends Component<Props> {
     headerClickCallback(id);
   }
 
+  newValueReceivedForVariable(newValue, name){
+    console.log("Elevating change to FlowDesigner with name " + name + " and value " + newValue);
+    const {stateChangeCallback} = this.props;
+    stateChangeCallback(name, newValue);
+  }
+
   renderCollapsedCard(){
     const {collapsedCardColor, cardTitle, cardIconSVG} = this.props;
 
@@ -139,7 +155,8 @@ export default class FlowCard extends Component<Props> {
   }
 
   renderOpenedCard(){
-    const {collapsedCardColor, cardTitle, cardIconSVG, borderColorCode, shouldHighlight} = this.props;
+    const {collapsedCardColor, cardTitle, cardIconSVG, borderColorCode,
+      shouldHighlight, inputs, outputs, variables, states} = this.props;
 
     const cardHeaderStyle = {
     };
@@ -155,6 +172,142 @@ export default class FlowCard extends Component<Props> {
     const shadowElement = {};
     if(shouldHighlight){
       shadowElement.boxShadow = "0 0 10px #acacac";
+    }
+
+    const inputsToShow = [];
+    for(let i = 0; i < inputs.length; i+=1){
+      const parameter = inputs[i];
+
+      const parts = parameter.split(':');
+      const name = parts[0];
+      const allowedTypes = parts[1].toLowerCase().split("|");
+
+      let typeString = "";
+      for(let j = 0; j < allowedTypes.length; j+=1){
+        let toAdd = allowedTypes[j];
+        if(toAdd === "str"){
+          toAdd = "String";
+        }
+        if(toAdd === "int"){
+          toAdd = "Integer";
+        }
+        if(toAdd === "float"){
+          toAdd = "Float";
+        }
+        if(toAdd === "bool"){
+          toAdd = "Boolean";
+        }
+        if(toAdd === "none"){
+          toAdd = "None";
+        }
+
+        if(j !== allowedTypes.length - 1){
+          if(allowedTypes.length > 2) {
+            toAdd += ", ";
+          }else{
+            toAdd += " ";
+          }
+        }else if(allowedTypes.length > 1) {
+          toAdd = `or ${toAdd}`;
+        }
+
+        typeString += toAdd;
+      }
+      inputsToShow.push(
+        <div className={styles.input_parameter_item} key={i}>
+          <div className={styles.parameter}>
+            <div className={styles.parameter_label}>
+              <Label
+                required={!allowedTypes.includes("none")}
+                className={styles.labelStyles}
+                >
+                {name}
+              </Label>
+            </div>
+            <div className={styles.inputParameterBox}>
+              <DraftEditor
+                placeholder={typeString}
+                multiLine
+                autoAdjustHeight
+                className={styles.textboxStyles}
+                suppressContentEditableWarning
+                text={name in states ? states[name] : "Default"}
+                variables={variables}
+                changeCallback={(newValue) => {this.newValueReceivedForVariable(newValue, name)}}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const outputsToShow = [];
+    for(let i = 0; i < outputs.length; i+=1){
+      const parameter = outputs[i];
+
+      const parts = parameter.split(':');
+      const name = parts[0];
+      const typesBars = parts[1].toLowerCase();
+      const allowedTypes = parts[1].toLowerCase().split("|");
+
+      let typeString = "";
+      for(let j = 0; j < allowedTypes.length; j+=1){
+        let toAdd = allowedTypes[j];
+        if(toAdd === "str"){
+          toAdd = "String";
+        }
+        if(toAdd === "int"){
+          toAdd = "Integer";
+        }
+        if(toAdd === "float"){
+          toAdd = "Float";
+        }
+        if(toAdd === "bool"){
+          toAdd = "Boolean";
+        }
+        if(toAdd === "none"){
+          toAdd = "None";
+        }
+
+        if(j !== allowedTypes.length - 1){
+          if(allowedTypes.length > 2) {
+            toAdd += ", ";
+          }else{
+            toAdd += " ";
+          }
+        }else if(allowedTypes.length > 1) {
+          toAdd = `or ${toAdd}`;
+        }
+
+        typeString += toAdd;
+      }
+
+      outputsToShow.push(
+        <div className={styles.input_parameter_item} key={i}>
+          <div className={styles.parameter}>
+            <div className={styles.parameter_label}>
+              <Label
+                required={!allowedTypes.includes("none")}
+                className={styles.labelStyles}
+              >
+                {name}
+              </Label>
+            </div>
+            <div className={styles.inputParameterBox}>
+              <DraftEditor
+                placeholder={typeString}
+                multiLine
+                autoAdjustHeight
+                className={styles.textboxStyles}
+                suppressContentEditableWarning
+                text={name in states ? states[name] : "Default"}
+                variables={variables}
+                changeCallback={(newValue) => {this.newValueReceivedForVariable(newValue, name)}}
+              />
+            </div>
+          </div>
+        </div>
+      );
     }
 
     return (
@@ -184,7 +337,23 @@ export default class FlowCard extends Component<Props> {
             {this.renderContextDots(collapsedCardColor)}
           </div>
 
-          This is a sample of some content. Really we want to just render whatever the instructions tell us.
+          <div className={styles.open_card_body}>
+            {/* This is where the card's body should be shown. Let's go through and do outputs and inputs */}
+            {inputs.length > 0 || outputs.length > 0 ?
+              <div className={styles.parameter_group}>
+                <div className={styles.parameters_body}>
+                  <div className={styles.parameters_list}>
+                    {inputs.length > 0 ? inputsToShow : null}
+                    {inputs.length > 0 && outputs.length > 0 ?
+                    <div className={styles.dynamicAddedParamBottomDivider} />
+                    : null}
+                    {outputs.length > 0 ? outputsToShow : null}
+                  </div>
+                </div>
+              </div>
+            : null
+            }
+          </div>
         </div>
       </div>
     );

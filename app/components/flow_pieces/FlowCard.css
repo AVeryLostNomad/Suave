@@ -271,6 +271,12 @@
 
 .parameter_group {
   padding-top: 0.25em;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .parameters_body {
@@ -296,6 +302,7 @@
 .dynamicAddedParamBottomDivider {
   border-bottom: solid 1px #D8D8D8;
   margin-top: 20px;
+  margin-bottom: 20px;
   display: block;
 }
 
@@ -332,4 +339,50 @@
   border: none;
   cursor: pointer;
   font-size: 12px;
+}
+
+.parameter {
+  display: inline-block;
+  width: 100%;
+}
+
+.parameter_label {
+  text-transform: none;
+  color: #595959;
+  margin: 0;
+  margin-right: 8px;
+  display: inline-block;
+  width: 100px;
+  vertical-align: top;
+  padding-top: 5.5px;
+  max-height: 28px;
+}
+
+.labelStyles {
+  padding: 0;
+}
+
+.textboxStyles {
+  width: calc(100% - 110px);
+  float: right;
+}
+
+.inputParameterBox {
+  box-sizing: border-box;
+  border: 1px solid #989898;
+  vertical-align: middle;
+  display: inline-block;
+  width: calc(100% - 110px);
+  float: right;
+  background-color: #fff;
+  color: #000;
+  font-size: 12px;
+  cursor: text;
+  min-height: 26px;
+  padding: 0 10px;
+  position: relative;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
