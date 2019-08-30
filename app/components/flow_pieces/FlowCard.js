@@ -115,7 +115,8 @@ export default class FlowCard extends Component<Props> {
   newValueReceivedForVariable(newValue, name){
     console.log("Elevating change to FlowDesigner with name " + name + " and value " + newValue);
     const {stateChangeCallback} = this.props;
-    stateChangeCallback(name, newValue);
+    stateChangeCallback(name, newValue.replace(/\r?\n|\r/, ""));
+    this.forceUpdate();
   }
 
   renderCollapsedCard(){
@@ -224,18 +225,16 @@ export default class FlowCard extends Component<Props> {
                 {name}
               </Label>
             </div>
-            <div className={styles.inputParameterBox}>
-              <DraftEditor
-                placeholder={typeString}
-                multiLine
-                autoAdjustHeight
-                className={styles.textboxStyles}
-                suppressContentEditableWarning
-                text={name in states ? states[name] : "Default"}
-                variables={variables}
-                changeCallback={(newValue) => {this.newValueReceivedForVariable(newValue, name)}}
-              />
-            </div>
+            <DraftEditor
+              placeholder={typeString}
+              multiLine
+              autoAdjustHeight
+              className={styles.textboxStyles}
+              suppressContentEditableWarning
+              text={name in states ? states[name] : ""}
+              variables={variables}
+              changeCallback={(newValue) => {this.newValueReceivedForVariable(newValue, name)}}
+            />
           </div>
         </div>
       );
@@ -293,18 +292,16 @@ export default class FlowCard extends Component<Props> {
                 {name}
               </Label>
             </div>
-            <div className={styles.inputParameterBox}>
-              <DraftEditor
-                placeholder={typeString}
-                multiLine
-                autoAdjustHeight
-                className={styles.textboxStyles}
-                suppressContentEditableWarning
-                text={name in states ? states[name] : "Default"}
-                variables={variables}
-                changeCallback={(newValue) => {this.newValueReceivedForVariable(newValue, name)}}
-              />
-            </div>
+            <DraftEditor
+              placeholder={typeString}
+              multiLine
+              autoAdjustHeight
+              className={styles.textboxStyles}
+              suppressContentEditableWarning
+              text={name in states ? states[name] : ""}
+              variables={variables}
+              changeCallback={(newValue) => {this.newValueReceivedForVariable(newValue, name)}}
+            />
           </div>
         </div>
       );

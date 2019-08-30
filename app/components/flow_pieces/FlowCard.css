@@ -366,23 +366,3 @@
   width: calc(100% - 110px);
   float: right;
 }
-
-.inputParameterBox {
-  box-sizing: border-box;
-  border: 1px solid #989898;
-  vertical-align: middle;
-  display: inline-block;
-  width: calc(100% - 110px);
-  float: right;
-  background-color: #fff;
-  color: #000;
-  font-size: 12px;
-  cursor: text;
-  min-height: 26px;
-  padding: 0 10px;
-  position: relative;
-  line-height: 24px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
