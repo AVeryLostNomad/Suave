@@ -50,7 +50,8 @@ type Props = {
   variables: [], // Should be a dicitonary with keys name, color, icon
   text: "",
   changeCallback: (newValue) => {},
-  placeholder: ""
+  placeholder: "",
+  uniqueID: ""
 };
 
 export default class DraftEditor extends Component<Props> {
@@ -59,7 +60,7 @@ export default class DraftEditor extends Component<Props> {
   constructor(props) {
     super(props);
 
-    const {text} = props;
+    const {text, uniqueID} = props;
 
     this.segmentsInEditor = [];
 
@@ -90,7 +91,12 @@ export default class DraftEditor extends Component<Props> {
         if(this.editableRef.current !== document.activeElement) {
           if(typeof document.activeElement.className !== 'undefined' && document.activeElement.className.includes("tokenButton")){
             if(document.activeElement.hasAttribute("title")){
-              this.clickOnVariable(document.activeElement.getAttribute("title"));
+              const recommendationParent = document.activeElement.parentElement.parentElement.parentElement;
+              if(recommendationParent != null && recommendationParent.hasAttribute("owner")){
+                if(recommendationParent.getAttribute("owner") === uniqueID){
+                  this.clickOnVariable(document.activeElement.getAttribute("title"));
+                }
+              }
             }
           }
           this.hideInsertTool();
@@ -105,6 +111,19 @@ export default class DraftEditor extends Component<Props> {
     let buildingString = "";
     let inVarMode = false;
     let inFuncMode = false;
+
+    // Handle the case in which we start with a function or variable
+    if(string.charAt(0) === '$'){
+      this.segmentsInEditor.push(
+        <div data-contents key='empty'>
+          <div data-block>
+            <span>
+              <br data-text />
+            </span>
+          </div>
+        </div>
+      );
+    }
 
     for(let i = 0; i < string.length; i+=1){
       const char = string.charAt(i);
@@ -141,11 +160,13 @@ export default class DraftEditor extends Component<Props> {
         }else{
           inVarMode = true;
 
-          this.segmentsInEditor.push(
-            <span key={i}>
+          if(buildingString.length > 0) {
+            this.segmentsInEditor.push(
+              <span key={i}>
               <span>{buildingString}</span>
             </span>
-          );
+            );
+          }
           buildingString = "";
         }
 
@@ -166,7 +187,7 @@ export default class DraftEditor extends Component<Props> {
     }else{
       // We need to add an empty string to the end so we can still edit it
       this.segmentsInEditor.push(
-        <div data-contents key='empty'>
+        <div data-contents key='emptyStart'>
           <div data-block>
             <span>
               <br data-text />
@@ -179,11 +200,22 @@ export default class DraftEditor extends Component<Props> {
 
   handleCardContentsChange(event){
     // We only want to just track changes in input if the mask isn't present or relevant
-    const {changeCallback} = this.props;
-    const newValue = this.buildStringFromContent(event.target);
-    changeCallback(newValue);
-    const cpos = getCaretPosition(event.target);
-    this.setState({cursor: cpos});
+    const {changeCallback, text} = this.props;
+    let newValue;
+    if(text.length === 0){
+      newValue = event.target.innerText.slice();
+      // eslint-disable-next-line no-param-reassign
+      event.target.innerText = "";
+
+      changeCallback(newValue);
+      this.setState({cursor: 1});
+    }else{
+      newValue = this.buildStringFromContent(event.target);
+
+      changeCallback(newValue);
+      const cpos = getCaretPosition(event.target);
+      this.setState({cursor: cpos});
+    }
   }
 
   buildStringFromContent(element){
@@ -287,7 +319,7 @@ export default class DraftEditor extends Component<Props> {
   }
 
   render() {
-    const {text, placeholder} = this.props;
+    const {text, placeholder, uniqueID} = this.props;
     const {showParamInsert} = this.state;
 
     this.segmentsInEditor = [];
@@ -302,19 +334,14 @@ export default class DraftEditor extends Component<Props> {
           <div className={styles.content} contentEditable suppressContentEditableWarning role="textbox"
                spellCheck="false" onInput={(event) => {this.handleCardContentsChange(event)}} ref={this.editableRef}
                onKeyDown={(event) => {this.handleKeyDown(event)}} onFocus={() => {this.showInsertTool()}} onBlur={() => {}}
+               placeholder={placeholder}
           >
             {text.length > 0 ?
               <div className={styles.defaultBlock} key="segments">
                 {this.segmentsInEditor}
               </div>
               :
-              <div data-contents key="emptyDat">
-                <div data-block>
-                      <span>
-                        <br data-text />
-                      </span>
-                </div>
-              </div>
+              null // So that we can show the placeholder
             }
           </div>
         </div>
@@ -323,7 +350,7 @@ export default class DraftEditor extends Component<Props> {
     );
     if(showParamInsert){
       itemsToReturn.push(
-        <div className={styles.tokenRecommendation} key="recs">
+        <div className={styles.tokenRecommendation} key="recs" owner={uniqueID}>
           <div>Insert parameters from previous steps</div>
           {this.buildVariableOptions()}
         </div>
