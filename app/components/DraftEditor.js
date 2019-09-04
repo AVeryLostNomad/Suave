@@ -51,7 +51,8 @@ type Props = {
   text: "",
   changeCallback: (newValue) => {},
   placeholder: "",
-  uniqueID: ""
+  uniqueID: "",
+  showRecommendations: true
 };
 
 export default class DraftEditor extends Component<Props> {
@@ -118,7 +119,7 @@ export default class DraftEditor extends Component<Props> {
         <div data-contents key='empty'>
           <div data-block>
             <span>
-              <br data-text />
+              <span data-text />
             </span>
           </div>
         </div>
@@ -211,16 +212,38 @@ export default class DraftEditor extends Component<Props> {
       this.setState({cursor: 1});
     }else{
       newValue = this.buildStringFromContent(event.target);
-
-      changeCallback(newValue);
-      const cpos = getCaretPosition(event.target);
-      this.setState({cursor: cpos});
+      if(newValue.startsWith("^&^@##")){
+        // This was typed directly into the parent div
+        changeCallback(newValue.substr(6));
+        this.setState({cursor: 1});
+      }else{
+        changeCallback(newValue);
+        const cpos = getCaretPosition(event.target);
+        this.setState({cursor: cpos});
+      }
     }
   }
 
   buildStringFromContent(element){
     const inner = element.children[0];
     let toReturn = "";
+
+    // This whole if statement handles the case in which you type into the actual parent div instead of one of our
+    // ones we want you to edit. We try to catch that text and read it, but then need to immediately remove it so that
+    // it can be placed in the proper container when the state updates.
+    if(element.childNodes[0].childNodes.length > 0){
+      if(element.childNodes[0].childNodes[0].nodeType === 3){
+        // This is a simple text node. Let's add the value to the front here.
+        toReturn += `^&^@##${element.childNodes[0].childNodes[0].nodeValue.slice()}`;
+
+        if(toReturn.length > 0) {
+          // Remove the duplicate inner-text if and only if we need to do so.
+          element.childNodes[0].removeChild(element.childNodes[0].childNodes[0]);  // Remove it so we don't get duplication.
+          this.setState({ cursor: 1 });
+        }
+      }
+    }
+
     for(let i = 0; i < inner.children.length; i++){
       const thisChild = inner.children[i];
       if(thisChild.hasAttribute("variable")){
@@ -319,7 +342,7 @@ export default class DraftEditor extends Component<Props> {
   }
 
   render() {
-    const {text, placeholder, uniqueID} = this.props;
+    const {text, placeholder, uniqueID, showRecommendations} = this.props;
     const {showParamInsert} = this.state;
 
     this.segmentsInEditor = [];
@@ -348,7 +371,7 @@ export default class DraftEditor extends Component<Props> {
       </div>
     </div>
     );
-    if(showParamInsert){
+    if(showParamInsert && showRecommendations){
       itemsToReturn.push(
         <div className={styles.tokenRecommendation} key="recs" owner={uniqueID}>
           <div>Insert parameters from previous steps</div>

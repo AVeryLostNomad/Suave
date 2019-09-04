@@ -235,6 +235,7 @@ export default class FlowCard extends Component<Props> {
               variables={variables}
               changeCallback={(newValue) => {this.newValueReceivedForVariable(newValue, name)}}
               uniqueID={`${name}vars`}
+              showRecommendations
             />
           </div>
         </div>
@@ -302,6 +303,7 @@ export default class FlowCard extends Component<Props> {
               text={name in states ? states[name] : ""}
               variables={variables}
               changeCallback={(newValue) => {this.newValueReceivedForVariable(newValue, name)}}
+              showRecommendations={false}
             />
           </div>
         </div>
