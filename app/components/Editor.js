@@ -10,6 +10,7 @@ import { Icon } from 'office-ui-fabric-react/lib/Icon'
 import Test from './Test'
 import Plugins from './Plugins'
 import FlowDesigner from './FlowDesigner';
+import FlowEditChooser from './FlowEditChooser';
 
 import styles from './Editor.css';
 
@@ -44,6 +45,8 @@ export default class Editor extends Component<Props> {
         return <Plugins plugins={plugins} />;
       case 'flowdesigner':
         return <FlowDesigner plugins={plugins} designSoFar={{}} />;
+      case 'floweditchooser':
+        return <FlowEditChooser />;
       default:
         return <Test />;
     }
@@ -85,7 +88,7 @@ export default class Editor extends Component<Props> {
               name: 'Flows',
               links: [
                 {
-                  key: 'flowdesigner',
+                  key: 'floweditchooser',
                   name: 'Designer',
                   url: ''
                 },

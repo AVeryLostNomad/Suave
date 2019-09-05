@@ -3,21 +3,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import routes from '../constants/routes';
 import styles from './Loading.css';
+import {getFiles, homedir, getDirectories} from '../utils/fsutils';
 
 const debug = true;
 
 const { spawn } = require('child_process');
 const fs = require("fs");
 
-const homedir = require('os').homedir();
-const { join } = require('path');
-
-const isDirectory = source => fs.lstatSync(source).isDirectory();
-const isFile = source => fs.lstatSync(source).isFile();
-const getDirectories = source =>
-  fs.readdirSync(source).map(name => join(source, name)).filter(isDirectory);
-const getFiles = source =>
-  fs.readdirSync(source).map(name => join(source, name)).filter(isFile);
 
 type Props = {
   onDone: (plugins) => {}
