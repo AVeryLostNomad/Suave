@@ -10,7 +10,6 @@ const debug = true;
 const { spawn } = require('child_process');
 const fs = require("fs");
 
-
 type Props = {
   onDone: (plugins) => {}
 };
